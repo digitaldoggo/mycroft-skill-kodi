@@ -13,7 +13,7 @@ commands made to mycroft.
 
 2. Copy or clone this repository into mycroft's skills directory:
     ```
-    git clone https://github.com/k3yb0ardn1nja/mycroft-skill-kodi /path/to/mycroft-core/mycroft/skills/kodi_skill 
+    git clone https://github.com/k3yb0ardn1nja/mycroft-skill-kodi /path/to/mycroft-core/mycroft/skills/kodi_controller
     ```
 3. Run `setup.sh` from the kodi_skill directory you just created.
 

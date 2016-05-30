@@ -1,16 +1,12 @@
 from os.path import dirname
+import httplib2
+import json
 
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
-
-import httplib2
-import json
-
-with open('constants.json') as data_file:
-    constants = json.load(data_file)
-
-import helpers
+from mycroft.skills.kodi_controller.helpers import get_player_id
+from mycroft.skills.kodi_controller.helpers import make_request
 
 __author__ = 'k3yb0ardn1nja'
 
@@ -33,7 +29,7 @@ class KodiSkill(MycroftSkill):
         
         conn = httplib2.Http()
 
-        playerid = helpers.get_player_id(conn)
+        playerid = get_player_id(conn)
         if playerid > 0:
             method = "Player.PlayPause"
             json_params = {
@@ -44,7 +40,7 @@ class KodiSkill(MycroftSkill):
                     "playerid":playerid
                 }
             }
-            res = helpers.make_request(conn, method, json_params)
+            res = make_request(conn, method, json_params)
             
         elif playerid == 0:
             print "There is no player"

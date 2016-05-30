@@ -1,21 +1,23 @@
+import os.path
+from netifaces import interfaces, ifaddresses, AF_INET
 import httplib2
 import json
 import socket
-from netifaces import interfaces, ifaddresses, AF_INET
-import os.path 
-
 import jsonhelpers
 
-if os.path.isfile('constants.json'):
-    with open('constants.json') as data_file:
-        constants = jsonhelpers.json_load_byteified(data_file) 
+headers = {"Content-type": "application/json"}
+
+# testing
+#configFile = 'kodi-config.json'
+
+configFile = 'mycroft/configuration/kodi-config.json'
 
 def make_request(conn, method, json_params):
     config = auto_discover()
     if config == -1:
         return -1
     try:
-        res, c = conn.request('http://' + config['HOST'] + ':' + str(config['PORT']) + '/jsonrpc?' + method, 'POST', json.dumps(json_params), constants['headers'])
+        res, c = conn.request('http://' + config['HOST'] + ':' + str(config['PORT']) + '/jsonrpc?' + method, 'POST', json.dumps(json_params), headers)
         
         if hasattr(res, 'status'):
             status = res['status']
@@ -65,19 +67,19 @@ def auto_discover():
         'params': [['Network.IPAddress','System.FriendlyName']]
     }
     
-    if os.path.isfile('config.json'):
-        with open('config.json') as data_file:
+    if os.path.isfile(configFile):
+        with open(configFile) as data_file:
             config = jsonhelpers.json_load_byteified(data_file)
     
     if ('config' in locals() and
         config.has_key('HOST') and
         config.has_key('PORT')):
         try:
-            res, c = conn.request('http://' + config['HOST'] + ':' + str(config['PORT']) + '/jsonrpc?' + method, 'POST', json.dumps(json_params), constants['headers'])
+            res, c = conn.request('http://' + config['HOST'] + ':' + str(config['PORT']) + '/jsonrpc?' + method, 'POST', json.dumps(json_params), headers)
             if ('res' in locals() and
                 res.has_key('status') and
                 res['status'] == '200'):
-                print("Using config in config.json")
+                print('Using config in ' + configFile)
                 return config
             else:
                 print("Reconfiguring")
@@ -91,7 +93,7 @@ def auto_discover():
                 try:
                     ipPrefix = addresses[0][:addresses[0].rfind('.') + 1]
                 
-                    res, c = conn.request('http://' + ipPrefix + str(xxx) + ':8080/jsonrpc?' + method, 'POST', json.dumps(json_params), constants['headers'])
+                    res, c = conn.request('http://' + ipPrefix + str(xxx) + ':8080/jsonrpc?' + method, 'POST', json.dumps(json_params), headers)
                     
                     if hasattr(res, 'status'):
                         status = res['status']
@@ -112,7 +114,7 @@ def auto_discover():
                                     config['HOST'] = result['result']['Network.IPAddress']
                                     config['PORT'] = 8080
                                 else:
-                                    f = open('config.json', 'w')
+                                    f = open(configFile, 'w+')
                                     config = {
                                         'NAME': result['result']['System.FriendlyName'],
                                         'HOST': result['result']['Network.IPAddress'],
