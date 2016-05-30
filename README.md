@@ -1,1 +1,1 @@
-kodi_controller
+Mycroft skill to provide integration to Kodi (XBMC)
