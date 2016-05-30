@@ -5,14 +5,12 @@ import json
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
-from mycroft.skills.kodi_controller.helpers import get_player_id
-from mycroft.skills.kodi_controller.helpers import make_request
+from mycroft.skills.kodi_controller.helpers import *
 
 __author__ = 'k3yb0ardn1nja'
 
 LOGGER = getLogger(__name__)
 
-# TODO: rename to KodiSkill and handle intents within or make multiple skills?
 class KodiSkill(MycroftSkill):
     def __init__(self):
         super(KodiSkill, self).__init__(name="KodiSkill")
@@ -27,7 +25,6 @@ class KodiSkill(MycroftSkill):
         self.register_intent(stop_intent, self.handle_stop_intent)
 
     def handle_playpause_intent(self, message):
-        #self.speak("Play Videos.")
         conn = httplib2.Http()
 
         playerid = get_player_id(conn)
@@ -44,10 +41,11 @@ class KodiSkill(MycroftSkill):
             res = make_request(conn, method, json_params)
             
         elif playerid == 0:
-            print "There is no player"
+            self.speak("There is no open video")
             
         else:
-            print "An error occurred"
+            self.speak("An error occurred")
+            
         pass
     
     def handle_stop_intent(self, message):
@@ -68,10 +66,11 @@ class KodiSkill(MycroftSkill):
             res = make_request(conn, method, json_params)
             
         elif playerid == 0:
-            print "There is no player"
+            self.speak("There is no open video")
             
         else:
-            print "An error occurred"
+            self.speak("An error occurred")
+            
         pass
 
 def create_skill():

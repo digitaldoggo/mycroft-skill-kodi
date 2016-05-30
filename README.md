@@ -15,7 +15,6 @@ commands made to mycroft.
     ```
     git clone https://github.com/k3yb0ardn1nja/mycroft-skill-kodi /path/to/mycroft-core/mycroft/skills/kodi_controller
     ```
-3. Run `setup.sh` from the kodi_skill directory you just created.
 
 ## Usage
 #### Examples:
@@ -24,3 +23,9 @@ commands made to mycroft.
     "mycroft, play the video"
     "mycroft, pause the movie"
     "mycroft, pause the video"
+    "mycroft, stop the movie"
+    "mycroft, stop the video"
+    "mycroft, close the movie"
+    "mycroft, close the video"
+    "mycroft, end the movie"
+    "mycroft, end the video"
