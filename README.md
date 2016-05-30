@@ -1,7 +1,9 @@
 # Kodi Remote Control Skill for Mycroft
 
 ## Description
-Mycroft skill to provide integration to Kodi (XBMC)
+Mycroft skill to provide integration to Kodi (XBMC). Enables
+the user to Play or Pause the currently playing video via voice
+commands made to mycroft.
 
 ## Setup
 1. Enable Web Server for remote control in Kodi's System Settings.
