@@ -6,6 +6,7 @@ from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
 from mycroft.skills.kodi_controller.helpers import *
+from mycroft.skills.kodi_controller.kodicontrols import *
 
 __author__ = 'k3yb0ardn1nja'
 
@@ -23,7 +24,10 @@ class KodiSkill(MycroftSkill):
         
         stop_intent = IntentBuilder("Stop").require("StopKeyword").build()
         self.register_intent(stop_intent, self.handle_stop_intent)
-
+        
+        pick_movie_intent = IntentBuilder("PickMovie").require("PickMovieKeyword").build()
+        self.register_intent(pick_movie_intent, self.handle_pick_movie_intent)
+        
     def handle_playpause_intent(self, message):
         conn = httplib2.Http()
 
@@ -72,6 +76,23 @@ class KodiSkill(MycroftSkill):
             self.speak("An error occurred")
             
         pass
+
+    def handle_pick_movie_intent(self, message):
+        #self.speak("Play Videos.")
+        conn = httplib2.Http()
+
+        searchTerm = 'ring'
+
+        res = GetMoviesBySearch(conn, 'name', searchTerm)
+        if (type(res) is dict and
+            res.has_key('error')):
+            print(res['error'])
+        else:
+            speech = 'I found ' + str(len(res)) + ' movies matching your search for ' + searchTerm + '... '
+            for i in range(0,3):
+                speech += res[i]['label'] + ' , , '
+            speech += 'Were you looking for one of these?'
+            self.speak(speech)
 
 def create_skill():
     return KodiSkill()
