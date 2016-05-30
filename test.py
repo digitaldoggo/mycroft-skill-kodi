@@ -9,6 +9,7 @@ conn = httplib2.Http()
 #connection = httplib2.Http(".cache")
 
 #kodicontrols.GetPlayerItem(conn)
-kodicontrols.PlayPause(conn)
+#kodicontrols.PlayPause(conn)
 #kodicontrols.Stop(conn)
 #helpers.auto_discover()
+kodicontrols.GetMovies(conn)

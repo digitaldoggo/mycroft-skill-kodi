@@ -68,3 +68,23 @@ def GetPlayerItem(conn):
         
     else:
         print 'An error occurred'
+        
+def GetMovies(conn):   
+    method = 'VideoLibrary.GetMovies'
+    json_params = {
+        'jsonrpc':'2.0',
+        'method':method,
+        'id':1,
+        'params': {
+            'properties': []
+        }
+    }
+    res = helpers.make_request(conn, method, json_params)
+    if (res.has_key('result') and
+        res['result'].has_key('movies') and
+        len(res['result']['movies']) > 0):
+        movies = res['result']['movies']
+        for i in range(0,len(movies)):
+            print(movies[i]['label'])
+    else:
+        print 'An error occurred'
