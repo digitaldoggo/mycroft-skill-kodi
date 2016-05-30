@@ -43,6 +43,8 @@ def Stop(conn):
         print 'An error occurred'
         
 def GetPlayerItem(conn):
+    config = helpers.auto_discover()
+    
     playerid = helpers.get_player_id(conn)
 
     if playerid > 0:
