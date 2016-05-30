@@ -15,7 +15,7 @@ commands made to mycroft.
     ```
     git clone https://github.com/k3yb0ardn1nja/mycroft-skill-kodi /path/to/mycroft-core/mycroft/skills/kodi_skill 
     ```
-3. If you know the hostname/IP of the Kodi Media Center, you can enter it in the config.json file in place of "localhost"
+3. Run `setup.sh` from the kodi_skill directory you just created.
 
 ## Usage
 #### Examples:
