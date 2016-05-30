@@ -6,15 +6,14 @@ import os.path
 
 import jsonhelpers
 
-# TODO: check config. auto-discover and update config if needed
-# try simple request to assure kodi is present, then
-# auto-discover and update config if not
 if os.path.isfile('constants.json'):
     with open('constants.json') as data_file:
         constants = jsonhelpers.json_load_byteified(data_file) 
 
 def make_request(conn, method, json_params):
     config = auto_discover()
+    if config == -1:
+        return -1
     try:
         res, c = conn.request('http://' + config['HOST'] + ':' + str(config['PORT']) + '/jsonrpc?' + method, 'POST', json.dumps(json_params), constants['headers'])
         
@@ -56,15 +55,6 @@ def get_player_id(conn):
         return 0
         
 def auto_discover():
-    if os.path.isfile('config.json'):
-        with open('config.json') as data_file:
-            config = jsonhelpers.json_load_byteified(data_file)
-    
-    if ('config' in locals() and
-        config.has_key('HOST') and
-        config.has_key('PORT')):
-        return config
-    
     # TODO: test this timeout to assure will hit machines
     conn = httplib2.Http(timeout=.1)
     method = 'XBMC.GetInfoLabels'
@@ -74,6 +64,25 @@ def auto_discover():
         'id':1,
         'params': [['Network.IPAddress','System.FriendlyName']]
     }
+    
+    if os.path.isfile('config.json'):
+        with open('config.json') as data_file:
+            config = jsonhelpers.json_load_byteified(data_file)
+    
+    if ('config' in locals() and
+        config.has_key('HOST') and
+        config.has_key('PORT')):
+        try:
+            res, c = conn.request('http://' + config['HOST'] + ':' + str(config['PORT']) + '/jsonrpc?' + method, 'POST', json.dumps(json_params), constants['headers'])
+            if ('res' in locals() and
+                res.has_key('status') and
+                res['status'] == '200'):
+                print("Using config in config.json")
+                return config
+            else:
+                print("Reconfiguring")
+        except:
+            print("Reconfiguring")
     
     for ifaceName in interfaces():
         addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr': 'No IP addr'}])]
@@ -120,6 +129,7 @@ def auto_discover():
                     print("Response received, but there was an issue. Status: " + status)
                     return -1
                 except socket.error, err:
-                    print("Not: 10.10.1." + str(xxx))
-                except httplib2.ServerNotFoundError:
-                    print("Not: 10.10.1." + str(xxx))
+                    pass
+                except:
+                    pass
+    return -1
