@@ -17,14 +17,14 @@ __author__ = 'k3yb0ardn1nja'
 LOGGER = getLogger(__name__)
 
 # TODO: rename to KodiSkill and handle intents within or make multiple skills?
-class PauseSkill(MycroftSkill):
+class KodiSkill(MycroftSkill):
     def __init__(self):
-        super(PauseSkill, self).__init__(name="PauseSkill")
+        super(KodiSkill, self).__init__(name="KodiSkill")
 
     def initialize(self):
         self.load_data_files(dirname(__file__))
 
-        intent = IntentBuilder("PauseSkill").require("PauseKeyword").build()
+        intent = IntentBuilder("KodiSkill").require("KodiKeyword").build()
         self.register_intent(intent, self.handle_intent)
 
     def handle_intent(self, message):
@@ -60,4 +60,4 @@ class PauseSkill(MycroftSkill):
 
 
 def create_skill():
-    return PauseSkill()
+    return KodiSkill()
