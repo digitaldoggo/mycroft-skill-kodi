@@ -10,9 +10,9 @@ Mycroft skill to provide integration to Kodi (XBMC)
     - Use default port (8080)
 
 2. Copy or clone this repository into mycroft's skills directory:
-```
-git clone https://github.com/k3yb0ardn1nja/mycroft-skill-kodi /path/to/mycroft-core/mycroft/skills/kodi_skill 
-```
+    ```
+    git clone https://github.com/k3yb0ardn1nja/mycroft-skill-kodi /path/to/mycroft-core/mycroft/skills/kodi_skill 
+    ```
 3. If you know the hostname/IP of the Kodi Media Center, you can enter it in the config.json file in place of "localhost"
 
 ## Usage
