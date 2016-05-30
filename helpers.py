@@ -7,10 +7,9 @@ import jsonhelpers
 
 headers = {"Content-type": "application/json"}
 
-# testing
-#configFile = 'kodi-config.json'
-
 configFile = 'mycroft/configuration/kodi-config.json'
+# testing
+configFile = 'kodi-config.json'
 
 def make_request(conn, method, json_params):
     config = auto_discover()

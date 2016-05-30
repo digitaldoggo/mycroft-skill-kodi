@@ -12,4 +12,10 @@ conn = httplib2.Http()
 #kodicontrols.PlayPause(conn)
 #kodicontrols.Stop(conn)
 #helpers.auto_discover()
-kodicontrols.GetMovies(conn)
+res = kodicontrols.GetMoviesBySearch(conn, 'name', 'ring')
+
+if (type(res) is dict and
+    res.has_key('error')):
+    print(res['error'])
+else:
+    pass
