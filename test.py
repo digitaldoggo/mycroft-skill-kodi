@@ -1,34 +1,15 @@
 import httplib2
 import json
 
-conn = httplib2.Http(".cache")
-headers = {
-    "Content-type": "application/json",
-}
+with open('constants.json') as data_file:
+    constants = json.load(data_file)
 
-# Pause / Play
-#
-# method = "Player.PlayPause"
-# json_params = json.dumps({
-#     "jsonrpc":"2.0",
-#     "method":method,
-#     "id":1,
-#     "params": {
-#         "playerid":1
-#     }
-# })
+import helpers
+import kodicontrols
 
-# res = conn.request("http://localhost:8080/jsonrpc?" + method, 'POST', json_params, headers)
+conn = httplib2.Http()
+# caches stuff retrieved (use for searching)
+#connection = httplib2.Http(".cache")
 
-
-# Get movies
-method = "Player.GetActivePlayers"
-json_params = {
-    "jsonrpc":"2.0",
-    "method":method,
-    "id":1
-}
-
-res = conn.request("http://localhost:8080/jsonrpc?" + method, 'POST', json.dumps(json_params), headers)
-
-print(res[1])
+kodicontrols.PlayPause(conn)
+#kodicontrols.Stop(conn)

@@ -7,11 +7,16 @@ from mycroft.util.log import getLogger
 import httplib2
 import json
 
+with open('constants.json') as data_file:
+    constants = json.load(data_file)
+
+import helpers
+
 __author__ = 'k3yb0ardn1nja'
 
 LOGGER = getLogger(__name__)
 
-
+# TODO: rename to KodiSkill and handle intents within or make multiple skills?
 class PauseSkill(MycroftSkill):
     def __init__(self):
         super(PauseSkill, self).__init__(name="PauseSkill")
@@ -25,21 +30,28 @@ class PauseSkill(MycroftSkill):
     def handle_intent(self, message):
         #self.speak("Play Videos.")
         print "Playing the movie."
-        conn = httplib2.Http(".cache")
-        method = "Player.PlayPause"
-        json_params = json.dumps({
-            "jsonrpc":"2.0",
-            "method":method,
-            "id":1,
-            "params": {
-                "playerid":1
+        
+        conn = httplib2.Http()
+
+        playerid = helpers.get_player_id(conn)
+        if playerid > 0:
+            method = "Player.PlayPause"
+            json_params = {
+                "jsonrpc":"2.0",
+                "method":method,
+                "id":1,
+                "params": {
+                    "playerid":playerid
+                }
             }
-        })
-        headers = {
-            "Content-type": "application/json",
-        }
-        res, c = conn.request("http://localhost:8080/jsonrpc?" + method, 'POST', json_params, headers)
-        print json.dumps(res)
+            res = helpers.make_request(conn, method, json_params)
+            
+        elif playerid == 0:
+            print "There is no player"
+            
+        else:
+            print "An error occurred"
+            
         pass
         
 
