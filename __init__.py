@@ -20,13 +20,14 @@ class KodiSkill(MycroftSkill):
     def initialize(self):
         self.load_data_files(dirname(__file__))
 
-        intent = IntentBuilder("KodiSkill").require("KodiKeyword").build()
-        self.register_intent(intent, self.handle_intent)
-
-    def handle_intent(self, message):
-        #self.speak("Play Videos.")
-        print "Playing the movie."
+        playpause_intent = IntentBuilder("PlayPause").require("PlayPauseKeyword").build()
+        self.register_intent(playpause_intent, self.handle_playpause_intent)
         
+        stop_intent = IntentBuilder("Stop").require("StopKeyword").build()
+        self.register_intent(stop_intent, self.handle_stop_intent)
+
+    def handle_playpause_intent(self, message):
+        #self.speak("Play Videos.")
         conn = httplib2.Http()
 
         playerid = get_player_id(conn)
@@ -47,13 +48,31 @@ class KodiSkill(MycroftSkill):
             
         else:
             print "An error occurred"
+        pass
+    
+    def handle_stop_intent(self, message):
+        #self.speak("Play Videos.")
+        conn = httplib2.Http()
+
+        playerid = get_player_id(conn)
+        if playerid > 0:
+            method = "Player.Stop"
+            json_params = {
+                "jsonrpc":"2.0",
+                "method":method,
+                "id":1,
+                "params": {
+                    "playerid":playerid
+                }
+            }
+            res = make_request(conn, method, json_params)
             
+        elif playerid == 0:
+            print "There is no player"
+            
+        else:
+            print "An error occurred"
         pass
-        
-
-    def stop(self):
-        pass
-
 
 def create_skill():
     return KodiSkill()
