@@ -56,7 +56,7 @@ def get_player_id(conn):
         return 0
         
 def auto_discover():
-    # TODO: test this timeout to assure will hit machines
+    # TODO: use async requests
     conn = httplib2.Http(timeout=.1)
     method = 'XBMC.GetInfoLabels'
     json_params = {
