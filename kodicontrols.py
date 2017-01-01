@@ -112,4 +112,18 @@ def GetMoviesBySearch(conn, getBy, searchTerm, start=0):
         for i in range(0,len(movies)):
             return movies
     else:
-        print 'An error occurred'
+        print 'No movies found matching your search for ' + searchTerm + '.'
+
+def PlayMovieById(conn, movieid):
+    method = 'Player.Open'
+    json_params = {
+        'jsonrpc':'2.0',
+        'method':method,
+        'id':1,
+        'params': {
+            'item':{
+                'movieid': movieid
+            }
+        }
+    }
+    res = helpers.make_request(conn, method, json_params)

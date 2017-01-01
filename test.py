@@ -12,10 +12,12 @@ conn = httplib2.Http()
 #kodicontrols.PlayPause(conn)
 #kodicontrols.Stop(conn)
 #helpers.auto_discover()
-res = kodicontrols.GetMoviesBySearch(conn, 'name', 'ring')
+res = kodicontrols.GetMoviesBySearch(conn, 'name', 'Lord of the Rings the two towers')
 
 if (type(res) is dict and
     res.has_key('error')):
     print(res['error'])
 else:
-    pass
+    if (res is not None):
+        if(res.count > 1):
+            kodicontrols.PlayMovieById(conn, res[0]['movieid'])
