@@ -9,7 +9,7 @@ headers = {"Content-type": "application/json"}
 
 configFile = 'mycroft/configuration/kodi-config.json'
 # testing
-configFile = 'kodi-config.json'
+#configFile = 'kodi-config.json'
 
 def make_request(conn, method, json_params):
     config = auto_discover()
@@ -69,7 +69,7 @@ def auto_discover():
     if os.path.isfile(configFile):
         with open(configFile) as data_file:
             config = jsonhelpers.json_load_byteified(data_file)
-    
+
     if ('config' in locals() and
         config.has_key('HOST') and
         config.has_key('PORT')):

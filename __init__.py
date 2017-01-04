@@ -25,7 +25,7 @@ class KodiSkill(MycroftSkill):
         stop_intent = IntentBuilder("Stop").require("StopKeyword").build()
         self.register_intent(stop_intent, self.handle_stop_intent)
         
-        pick_movie_intent = IntentBuilder("PickMovie").require("PickMovieKeyword").build()
+        pick_movie_intent = IntentBuilder("PickMovie").require("PickMovieKeyword").require("Movie").build()
         self.register_intent(pick_movie_intent, self.handle_pick_movie_intent)
         
     def handle_playpause_intent(self, message):
@@ -78,20 +78,24 @@ class KodiSkill(MycroftSkill):
         pass
 
     def handle_pick_movie_intent(self, message):
-        #self.speak("Play Videos.")
         conn = httplib2.Http()
+        search = message.data.get("Movie")
 
-        searchTerm = 'ring'
-
-        res = GetMoviesBySearch(conn, 'name', searchTerm)
+        res = GetMoviesBySearch(conn, 'name', search)
         if (type(res) is dict and
             res.has_key('error')):
             print(res['error'])
         else:
-            speech = 'I found ' + str(len(res)) + ' movies matching your search for ' + searchTerm + '... '
-            for i in range(0,3):
-                speech += res[i]['label'] + ' , , '
-            speech += 'Were you looking for one of these?'
+            if (res is not None and
+            len(res) > 0):
+                speech = 'Playing ' + res[0]['label'] + ' on Kodi.'
+                PlayMovieById(conn, res[0]['movieid'])
+                # speech = 'I found ' + str(len(res)) + ' movies matching your search for ' + search + '... '
+                # for i in range(0,3):
+                #     speech += res[i]['label'] + ' , , '
+                # speech += 'Were you looking for one of these?'
+            else:
+                speech = 'I couldn\'t find a movie matching your search for ' + search + '.'
             self.speak(speech)
 
 def create_skill():

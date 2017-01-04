@@ -1,0 +1,1 @@
+(play|play the movie|tell cody to play|tell kodi to play|start the movie) (?P<Movie>.*)
