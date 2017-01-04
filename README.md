@@ -16,9 +16,18 @@ commands made to mycroft.
     git clone https://github.com/k3yb0ardn1nja/mycroft-skill-kodi /path/to/mycroft-core/mycroft/skills/kodi_controller
     ```
 
+3. Run the setup script:
+    ```
+    cd kodi_controller
+    sh ./setup.sh
+    ```
+    Note: if you are running mycroft in a virtual environment, be sure to run the setup script in the same environment. (workon mycroft)
+
 ## Usage
 #### Examples:
 
+    "mycroft, start the movie Rolling Kansas"
+    "mycroft, start the movie Despicable"
     "mycroft, play the movie"
     "mycroft, play the video"
     "mycroft, pause the movie"
