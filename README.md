@@ -15,6 +15,7 @@ commands made to mycroft.
     ```
     git clone https://github.com/k3yb0ardn1nja/mycroft-skill-kodi /path/to/mycroft-core/mycroft/skills/kodi_controller
     ```
+    Note: The skill folder must currently have the name "kodi_controller".
 
 3. Run the setup script:
     ```
